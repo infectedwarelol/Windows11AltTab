@@ -84,6 +84,10 @@ PYTHONDONTWRITEBYTECODE=1 python3 app/selfcheck.py
 
 `./inspect.sh` runs the build, export checks, the selfcheck, and source lint in one go. It must report 0 errors and 0 warnings.
 
+## License
+
+MIT, see [LICENSE](LICENSE). Bundled third-party components keep their own licenses.
+
 ## Third-party components
 
 - `runtime/` bundles the Python 3.13 embeddable package, licensed under the PSF License (`runtime/LICENSE.txt`).
