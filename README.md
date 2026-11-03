@@ -87,7 +87,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 app/selfcheck.py
 ## Third-party components
 
 - `runtime/` bundles the Python 3.13 embeddable package, licensed under the PSF License (`runtime/LICENSE.txt`).
-- `runtime/Lib/site-packages/cairo` bundles [pycairo](https://github.com/pygobject/pycairo) 1.29.2, licensed under LGPL-2.1-only or MPL-1.1.
+- `runtime/Lib/site-packages/cairo` bundles [pycairo](https://github.com/pygobject/pycairo) 1.29.2, licensed under LGPL-2.1-only or MPL-1.1, with the cairo library linked into its extension module under the same licenses. License texts are in `runtime/Lib/site-packages/pycairo-1.29.2.dist-info/licenses/`.
 
 Windows, Windows 11, and Microsoft Edge are trademarks of Microsoft Corporation. This project is not affiliated with or endorsed by Microsoft.
 
