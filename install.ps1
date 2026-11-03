@@ -55,7 +55,7 @@ function Test-Prerequisite {
     }
     foreach ($item in $PayloadItems) {
         if (-not (Test-Path -LiteralPath (Join-Path -Path $SourceDir -ChildPath $item))) {
-            throw "Missing payload item '$item' next to install.ps1."
+            throw "Missing payload item '$item' next to install.ps1. Use the release zip, or build bin and runtime as described in README.md."
         }
     }
 }

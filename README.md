@@ -2,18 +2,29 @@
 
 A Windows 11 port of my Hyprland "planet" Alt+Tab switcher. Open windows sit as app icons on a rendered globe; Alt+Tab spins the globe to the next one, releasing Alt switches to it.
 
-The folder is portable. It ships a Python 3.13 embeddable runtime with pycairo, one native DLL that holds the globe renderer and the keyboard hook, and pre-baked globe textures. Nothing is installed system-wide and nothing is written to HKLM.
+The release zip is portable. It ships a Python 3.13 embeddable runtime with pycairo, one native DLL that holds the globe renderer and the keyboard hook, and pre-baked globe textures. Nothing is installed system-wide and nothing is written to HKLM.
 
 ## Requirements
 
 - Windows 11 (build 22000 or newer), 64-bit
 - A normal, non-elevated PowerShell window
 
-If the folder came from a zip or download, unblock it first:
+## Download
 
-```powershell
-Get-ChildItem -Recurse | Unblock-File
-```
+The repository holds source only. The runnable build, with the Python runtime and the native DLLs, is attached to each [release](https://github.com/infectedwarelol/Windows11AltTab/releases).
+
+1. Download `PlanetAltTab-v1.0.0-win-x64.zip` and `SHA256SUMS.txt` from the latest release.
+2. Check the hash. The output must match the line in `SHA256SUMS.txt`:
+
+   ```powershell
+   Get-FileHash .\PlanetAltTab-v1.0.0-win-x64.zip -Algorithm SHA256
+   ```
+
+3. Extract the zip, open PowerShell in the extracted folder, and unblock the files:
+
+   ```powershell
+   Get-ChildItem -Recurse | Unblock-File
+   ```
 
 ## Install
 
@@ -68,13 +79,26 @@ Kills the switcher, which drops its keyboard hook, removes both autostart entrie
 - Edge tabs in Alt+Tab (`MultiTaskingAltTabFilter`) are not shown. Windows has no public API to enumerate them.
 - The fast DLL loads only on CPUs that report AVX2, FMA, and OS-enabled AVX state. Everything else uses the generic build.
 
-## Build
+## Build from source
 
-The native DLLs cross-compile on Linux with mingw-w64:
+The native DLLs cross-compile on Linux with mingw-w64 and land in `bin/`:
 
 ```bash
 ./native/build-native.sh
 ```
+
+The runtime is not in git. To assemble `runtime/` yourself:
+
+1. Extract the [Python 3.13 embeddable package](https://www.python.org/downloads/windows/) for amd64 (the release uses 3.13.9) into `runtime/`.
+2. Extract the pycairo 1.29.2 `cp313-win_amd64` wheel from [PyPI](https://pypi.org/project/pycairo/1.29.2/#files) into `runtime/Lib/site-packages/`.
+3. Replace `runtime/python313._pth` with these four lines:
+
+   ```text
+   python313.zip
+   .
+   Lib\site-packages
+   ..\app
+   ```
 
 `app/selfcheck.py` renders 3840×2160 frames at 1.0, 1.25, 1.5, and 2.0 scale with a fake native library, checks the layout math, and prints per-frame timings. It runs on Linux with only Python and pycairo:
 
@@ -89,6 +113,8 @@ PYTHONDONTWRITEBYTECODE=1 python3 app/selfcheck.py
 MIT, see [LICENSE](LICENSE). Bundled third-party components keep their own licenses.
 
 ## Third-party components
+
+These ship in the release zip, not in the repository.
 
 - `runtime/` bundles the Python 3.13 embeddable package, licensed under the PSF License (`runtime/LICENSE.txt`).
 - `runtime/Lib/site-packages/cairo` bundles [pycairo](https://github.com/pygobject/pycairo) 1.29.2, licensed under LGPL-2.1-only or MPL-1.1, with the cairo library linked into its extension module under the same licenses. License texts are in `runtime/Lib/site-packages/pycairo-1.29.2.dist-info/licenses/`.

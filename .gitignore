@@ -1,0 +1,6 @@
+bin/*.dll
+runtime/
+backup/
+__pycache__/
+*.pyc
+planet-alttab.log
